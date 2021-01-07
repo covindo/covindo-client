@@ -55,6 +55,46 @@ $(document).ready(() => {
       $('#passwordConfirmRegister').val('');
     }
   });
+
+  $('#buttonLogin').click(function (event) {
+    event.preventDefault();
+    const email = $('#emailLogin').val();
+    const password = $('#passwordLogin').val();
+
+    $.ajax({
+      method: 'POST',
+      url: `${url}/login`,
+      data: { email, password }
+    })
+      .done(response => {
+        console.log(response, 'RESPONSE CLIENT!!!!');
+        // save token to localStorage
+        // localStorage.setItem('access_token', response.access_token)
+        localStorage.access_token = response.access_token;
+        dashboardPage();
+      })
+      .fail(err => {
+        console.log(err, 'ERROR CLIENT');
+        const template = alertTemplate('error', err.responseJSON.message);
+        $(template).appendTo('#alert');
+      })
+      .always(() => {
+        console.log('ALWAYS');
+        $('#emailLogin').val('');
+        $('#passwordLogin').val('');
+      })
+
+  })
+
+  $('#logout-btn').click(function () {
+    localStorage.clear();
+    $('#login-page').show();
+    $('#register-page').hide();
+    $('#dashboard-page').hide();
+    $('#emailLogin').val('');
+    $('#passwordLogin').val('');
+  })
+  
 });
 
 const dashboardPage = () => {
