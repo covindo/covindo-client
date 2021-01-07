@@ -21,6 +21,40 @@ $(document).ready(() => {
     $('#login-page').hide();
     $('#register-page').show();
   })
+
+  $('#buttonRegister').click(function (event) {
+    event.preventDefault();
+    const email = $('#emailRegister').val();
+    const password = $('#passwordRegister').val();
+    const passwordConfirm = $('#passwordConfirmRegister').val();
+
+    if (password === passwordConfirm) {
+      $.ajax({
+        method: 'POST',
+        url: `${url}/register`,
+        data: { email, password }
+      })
+        .done(response => {
+          console.log(response);
+          $('#login-page').show();
+          $('#register-page').hide();
+        })
+        .fail(err => {
+          const template = alertTemplate('error', err.responseJSON.message);
+          $(template).appendTo('#alert');
+        })
+        .always(() => {
+          $('#emailRegister').val('');
+          $('#passwordRegister').val('');
+          $('#passwordConfirmRegister').val('');
+        })
+    } else {
+      const template = alertTemplate('error', 'Your password not match');
+      $(template).appendTo('#alert');
+      $('#passwordRegister').val('');
+      $('#passwordConfirmRegister').val('');
+    }
+  });
 });
 
 const dashboardPage = () => {
@@ -75,7 +109,7 @@ const newsList = () => {
         $(template).appendTo('#alert');
       });
     })
-    .always(() => {});
+    .always(() => { });
 }
 
 const caseIndonesiaList = () =>{
