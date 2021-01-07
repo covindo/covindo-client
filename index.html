@@ -33,7 +33,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" onclick="dashboardPage()" href="#">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" onclick="newsPage()" href="#">Berita</a>
@@ -117,7 +117,33 @@
       </form>
     </section>
     <!-- End Login Form -->
-    <section id="dashboard-page"></section>
+    <section id="dashboard-page">
+      <div class="container">
+        <div class="row mt-5">
+          <h1>Statistik Kasus Covid-19 di Indonesia</h1>
+        </div>
+        <div class="row mt-5" id="caseIndonesia">
+          
+        </div>
+        <div class="row mt-5">
+          <div class="col">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Provinsi</th>
+                  <th scope="col">Positif</th>
+                  <th scope="col">Sembuh</th>
+                  <th scope="col">Meninggal</th>
+                </tr>
+              </thead>
+              <tbody id="caseProvince">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
     <section id="news-page">
       <div class="container">
         <div class="row mt-5">
