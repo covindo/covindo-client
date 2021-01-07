@@ -3,8 +3,13 @@ const url = 'http://localhost:3000'
 $(document).ready(() => {
   console.log('Hello World');
 
+  if (localStorage.getItem('accessToken')) {
+    dashboardPage();
+  }
+
   $('#login-page').show();
   $('#register-page').hide();
+  $('#dashboard-page').hide();
 
   $('#buttonForLogin').click(function (event) {
     event.preventDefault();
@@ -16,16 +21,17 @@ $(document).ready(() => {
     $('#login-page').hide();
     $('#register-page').show();
   })
-  if (localStorage.getItem('accessToken')) {
-    dashboardPage();
-  }
 });
 
 const dashboardPage = () => {
   $(document).attr('title', 'Dashboard | Fancy Todo');
-  $('#auth').hide();
+  $('#register-page').hide();
+  $('#login-page').hide();
   $('#navbar').show();
   $('#dashboard-page').show();
+  $('#news-page').hide();
+  caseIndonesiaList();
+  caseProvinceList();
 };
 
 const newsPage = () => {
@@ -61,6 +67,98 @@ const newsList = () => {
           </div>
         </div>
         `).appendTo('#newsList');
+      });
+    })
+    .fail((err) => {
+      err.responseJSON.map((e) => {
+        const template = alertTemplate('error', e.message);
+        $(template).appendTo('#alert');
+      });
+    })
+    .always(() => {});
+}
+
+const caseIndonesiaList = () =>{
+  $.ajax({
+    url: url + '/stats',
+    method: 'GET',
+    // headers: {
+    //   authorization: `${localStorage.getItem('accessToken')}`,
+    // },
+  })
+    .done((response) => {
+      $('#caseIndonesia').empty();
+      response.map((data, index) => {
+        $(`
+          <div class="col">
+          <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Positif</h5>
+              <hr />
+              <p class="card-text"><h3 style="display:inline">${data.positif}</h3> <span>orang</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Sembuh</h5>
+              <hr />
+              <p class="card-text"><h3 style="display:inline">${data.sembuh}</h3> <span>orang</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Meninggal</h5>
+              <hr />
+              <p class="card-text"><h3 style="display:inline">${data.meninggal}</h3> <span>orang</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Dirawat</h5>
+              <hr />
+              <p class="card-text"><h3 style="display:inline">${data.dirawat}</h3> <span>orang</span></p>
+            </div>
+          </div>
+        </div>
+        `).appendTo('#caseIndonesia');
+      });
+    })
+    .fail((err) => {
+      err.responseJSON.map((e) => {
+        const template = alertTemplate('error', e.message);
+        $(template).appendTo('#alert');
+      });
+    })
+    .always(() => {});
+}
+
+const caseProvinceList = () => {
+  $.ajax({
+    url: url + '/stats/provinces',
+    method: 'GET',
+    // headers: {
+    //   authorization: `${localStorage.getItem('accessToken')}`,
+    // },
+  })
+    .done((response) => {
+      $('#caseProvince').empty();
+      response.map((data, index) => {
+        console.log(data)
+        $(`
+            <tr>
+              <th scope="row">${index+1}</th>
+              <td>${data.attributes.Provinsi}</td>
+              <td>${data.attributes.Kasus_Posi.toLocaleString()}</td>
+              <td>${data.attributes.Kasus_Semb.toLocaleString()}</td>
+              <td>${data.attributes.Kasus_Meni.toLocaleString()}</td>
+            </tr>
+        `).appendTo('#caseProvince');
       });
     })
     .fail((err) => {
