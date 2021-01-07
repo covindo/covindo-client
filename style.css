@@ -3,3 +3,12 @@ body {
   width: 100%;
   margin: 0;
 }
+
+#emailHelp {
+  color: #757575;
+}
+
+#login-page {
+  max-width: 480px;
+  margin: auto;
+}
