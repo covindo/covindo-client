@@ -78,7 +78,28 @@
       <div id="alert"></div>
     </section>
 
-    <section id="register-page"></section>
+    <!-- Start Register Form -->
+    <section id="register-page">
+      <h1 class="h3 mb-3 mt-4">Daftar Akun Baru</h1> 
+      <form>
+        <div class="mb-3">
+          <label for="emailRegister" class="form-label">Masukkan Email</label>
+          <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="passwordRegister" class="form-label">Masukkan Kata Sandi</label>
+          <input type="password" class="form-control" id="passwordRegister">
+        </div>
+        <div class="mb-3">
+          <label for="passwordConfirmRegister" class="form-label">Konfirmasi Kata Sandi</label>
+          <input type="password" class="form-control" id="passwordConfirmRegister">
+        </div>
+        <button type="submit" class="btn btn-primary" id="buttonRegister">Daftar</button>
+        <button type="button" class="btn btn-secondary" id="buttonForLogin">Masuk di sini</button>
+      </form>
+    </section>
+    <!-- End Register Form -->
+
     <!-- Start Login Form -->
     <section id="login-page">
       <h1 class="h3 mb-3 mt-4">Masuk ke akunmu</h1> 
@@ -88,8 +109,8 @@
           <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp">
         </div>
         <div class="mb-3">
-          <label for="passwordRegister" class="form-label">Masukkan Kata Sandi</label>
-          <input type="password" class="form-control" id="passwordRegister">
+          <label for="passwordLogin" class="form-label">Masukkan Kata Sandi</label>
+          <input type="password" class="form-control" id="passwordLogin">
         </div>
         <button type="submit" class="btn btn-primary" id="buttonLogin">Masuk</button>
         <button type="button" class="btn btn-secondary" id="buttonForRegister">Daftar di sini</button>

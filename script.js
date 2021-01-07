@@ -1,9 +1,18 @@
 $(document).ready(() => {
   console.log('Hello World');
 
+  $('#login-page').show();
+  $('#register-page').hide();
+
+  $('#buttonForLogin').click(function (event) {
+    event.preventDefault();
+    $('#register-page').hide();
+    $('#login-page').show();
+  })
   $('#buttonForRegister').click(function (event) {
-    event.preventDefault()
+    event.preventDefault();
     $('#login-page').hide();
+    $('#register-page').show();
   })
   if (localStorage.getItem('accessToken')) {
     dahsboardPage();
