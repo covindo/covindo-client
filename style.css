@@ -9,3 +9,7 @@ body {
   max-width: 480px;
   margin: auto;
 }
+
+#emailHelp {
+  color: #9E9E9E;
+}

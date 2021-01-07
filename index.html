@@ -84,7 +84,7 @@
       <form>
         <div class="mb-3">
           <label for="emailRegister" class="form-label">Masukkan Email</label>
-          <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp">
+          <input type="email" class="form-control" id="emailRegister">
         </div>
         <div class="mb-3">
           <label for="passwordRegister" class="form-label">Masukkan Kata Sandi</label>
@@ -92,7 +92,8 @@
         </div>
         <div class="mb-3">
           <label for="passwordConfirmRegister" class="form-label">Konfirmasi Kata Sandi</label>
-          <input type="password" class="form-control" id="passwordConfirmRegister">
+          <input type="password" class="form-control" id="passwordConfirmRegister" aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text">Kata sandi minimal 8 karakter.</div>
         </div>
         <button type="submit" class="btn btn-primary" id="buttonRegister">Daftar</button>
         <button type="button" class="btn btn-secondary" id="buttonForLogin">Masuk di sini</button>
@@ -106,7 +107,7 @@
       <form>
         <div class="mb-3">
           <label for="emailLogin" class="form-label">Masukkan Email</label>
-          <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp">
+          <input type="email" class="form-control" id="emailLogin">
         </div>
         <div class="mb-3">
           <label for="passwordLogin" class="form-label">Masukkan Kata Sandi</label>
