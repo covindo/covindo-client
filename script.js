@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000';
+const url = 'https://protected-crag-74313.herokuapp.com';
 
 $(document).ready(() => {
   loginPage();
@@ -25,6 +25,7 @@ const loginPage = () => {
   if (localStorage.getItem('accessToken')) {
     dashboardPage();
   } else {
+    $(document).attr('title', 'Login');
     $('#login-page').show();
     $('#register-page').hide();
     $('#dashboard-page').hide();
@@ -37,11 +38,13 @@ const loginPage = () => {
 };
 
 const goToRegister = () => {
+  $(document).attr('title', 'Register');
   $('#register-page').show();
   $('#login-page').hide();
 };
 
 const goToLogin = () => {
+  $(document).attr('title', 'Login');
   $('#register-page').hide();
   $('#login-page').show();
 };
@@ -105,13 +108,7 @@ const register = (e) => {
 
 const logout = () => {
   localStorage.clear();
-  $('#login-page').show();
-  $('#register-page').hide();
-  $('#dashboard-page').hide();
-  $('#news-page').hide();
-  $('#hoaxes-page').hide();
-  $('#hospitals-page').hide();
-  $('#navbar').hide();
+  loginPage();
   $('#emailLogin').val('');
   $('#passwordLogin').val('');
 
@@ -121,8 +118,8 @@ const logout = () => {
 
 const dashboardPage = () => {
   $(document).attr('title', 'Dashboard | Statistik');
-  $('#register-page').hide();
   $('#login-page').hide();
+  $('#register-page').hide();
   $('#navbar').show();
   $('#dashboard-page').show();
   $('#news-page').hide();
