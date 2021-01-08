@@ -10,6 +10,7 @@ $(document).ready(() => {
   $('#login-page').show();
   $('#register-page').hide();
   $('#dashboard-page').hide();
+  $('#navbar').hide();
 
   $('#buttonForLogin').click(function (event) {
     event.preventDefault();
@@ -98,34 +99,48 @@ $(document).ready(() => {
 });
 
 const dashboardPage = () => {
-  $(document).attr('title', 'Dashboard | Fancy Todo');
+  $(document).attr('title', 'Dashboard | Statistik');
   $('#register-page').hide();
   $('#login-page').hide();
   $('#navbar').show();
   $('#dashboard-page').show();
   $('#news-page').hide();
+  $('#hoaxes-page').hide();
   caseIndonesiaList();
   caseProvinceList();
 };
 
 const newsPage = () => {
-  $(document).attr('title', 'Dashboard | Fancy Todo');
+  $(document).attr('title', 'Dashboard | Berita');
   $('#register-page').hide();
   $('#login-page').hide();
   $('#navbar').show();
   $('#dashboard-page').hide();
   $('#news-page').show();
+  $('#hoaxes-page').hide();
 
   newsList()
+}
+
+const hoaxesPage = () => {
+  $(document).attr('title', 'Dashboard | Hoax');
+  $('#register-page').hide();
+  $('#login-page').hide();
+  $('#navbar').show();
+  $('#dashboard-page').hide();
+  $('#news-page').hide();
+  $('#hoaxes-page').show();
+
+  hoaxesList()
 }
 
 const newsList = () => {
   $.ajax({
     url: url + '/news',
     method: 'GET',
-    // headers: {
-    //   authorization: `${localStorage.getItem('accessToken')}`,
-    // },
+    headers: {
+      access_token: `${localStorage.getItem('access_token')}`,
+    },
   })
     .done((response) => {
       console.log()
@@ -152,13 +167,45 @@ const newsList = () => {
     .always(() => { });
 }
 
+const hoaxesList = () => {
+  $.ajax({
+    url: url + '/hoaxes',
+    method: 'GET',
+    headers: {
+      access_token: `${localStorage.getItem('access_token')}`,
+    },
+  })
+    .done((response) => {
+      $('#hoaxesList').empty();
+      response.map((data) => {
+        $(`
+        <div class="card w-75 mb-5">
+          <div class="card-body">
+            <h5 class="card-title">${data.title}</h5>
+            <p class="card-text"><a href="${data.url}" target="_blank">${data.url}</a></p>
+            <p>${moment(data.timestamp).format("DD MMMM YYYY")}</p>
+            <a href="${data.url}" target="_blank" class="btn btn-primary float-right">Baca selengkapnya</a>
+          </div>
+        </div>
+        `).appendTo('#hoaxesList');
+      });
+    })
+    .fail((err) => {
+      err.responseJSON.map((e) => {
+        const template = alertTemplate('error', e.message);
+        $(template).appendTo('#alert');
+      });
+    })
+    .always(() => { });
+}
+
 const caseIndonesiaList = () =>{
   $.ajax({
     url: url + '/stats',
     method: 'GET',
-    // headers: {
-    //   authorization: `${localStorage.getItem('accessToken')}`,
-    // },
+    headers: {
+      access_token: `${localStorage.getItem('access_token')}`,
+    },
   })
     .done((response) => {
       $('#caseIndonesia').empty();
@@ -216,9 +263,9 @@ const caseProvinceList = () => {
   $.ajax({
     url: url + '/stats/provinces',
     method: 'GET',
-    // headers: {
-    //   authorization: `${localStorage.getItem('accessToken')}`,
-    // },
+    headers: {
+      access_token: `${localStorage.getItem('access_token')}`,
+    },
   })
     .done((response) => {
       $('#caseProvince').empty();
