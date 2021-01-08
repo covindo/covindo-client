@@ -3,3 +3,13 @@ body {
   width: 100%;
   margin: 0;
 }
+
+#login-page, 
+#register-page {
+  max-width: 480px;
+  margin: auto;
+}
+
+#emailHelp {
+  color: #9E9E9E;
+}
