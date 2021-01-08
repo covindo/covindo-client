@@ -1,135 +1,123 @@
-const url = 'http://localhost:3000'
+const url = 'http://localhost:3000';
 
 $(document).ready(() => {
-  console.log('Hello World');
-
-  if (localStorage.getItem('accessToken')) {
-    dashboardPage();
-  }
-
-  $('#login-page').show();
-  $('#register-page').hide();
-  $('#dashboard-page').hide();
-  $('#logout-btn').hide();
-  $('#navbar').hide();
-
-  $('#buttonForLogin').click(function (event) {
-    event.preventDefault();
-    $('#register-page').hide();
-    $('#login-page').show();
-  })
-  $('#buttonForRegister').click(function (event) {
-    event.preventDefault();
-    $('#login-page').hide();
-    $('#register-page').show();
-  })
-
-  $('#buttonRegister').click(function (event) {
-    event.preventDefault();
-    const email = $('#emailRegister').val();
-    const password = $('#passwordRegister').val();
-    const passwordConfirm = $('#passwordConfirmRegister').val();
-
-    if (password === passwordConfirm) {
-      $.ajax({
-        method: 'POST',
-        url: `${url}/register`,
-        data: { email, password }
-      })
-        .done(response => {
-          console.log(response);
-          $('#login-page').show();
-          $('#register-page').hide();
-        })
-        .fail(err => {
-          const template = alertTemplate('error', err.responseJSON.message);
-          $(template).appendTo('#alert');
-        })
-        .always(() => {
-          $('#emailRegister').val('');
-          $('#passwordRegister').val('');
-          $('#passwordConfirmRegister').val('');
-        })
-    } else {
-      const template = alertTemplate('error', 'Your password not match');
-      $(template).appendTo('#alert');
-      $('#passwordRegister').val('');
-      $('#passwordConfirmRegister').val('');
-    }
-  });
-
-  $('#buttonLogin').click(function (event) {
-    event.preventDefault();
-    const email = $('#emailLogin').val();
-    const password = $('#passwordLogin').val();
-
-    $.ajax({
-      method: 'POST',
-      url: `${url}/login`,
-      data: { email, password }
-    })
-      .done(response => {
-        console.log(response, 'RESPONSE CLIENT!!!!');
-        // save token to localStorage
-        // localStorage.setItem('access_token', response.access_token)
-        localStorage.access_token = response.access_token;
-        dashboardPage();
-      })
-      .fail(err => {
-        console.log(err, 'ERROR CLIENT');
-        const template = alertTemplate('error', err.responseJSON.message);
-        $(template).appendTo('#alert');
-      })
-      .always(() => {
-        console.log('ALWAYS');
-        $('#emailLogin').val('');
-        $('#passwordLogin').val('');
-      })
-
-  })
-
-  $('#logout-btn').click(function () {
-    localStorage.clear();
-    $('#login-page').show();
-    $('#register-page').hide();
-    $('#dashboard-page').hide();
-    $('#emailLogin').val('');
-    $('#passwordLogin').val('');
-    // Google SSO
-    const auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  })
-  
+  loginPage();
 });
 
 function onSignIn(googleUser) {
-
   const id_token = googleUser.getAuthResponse().id_token;
   $.ajax({
     method: 'POST',
     url: `${url}/googleLogin`,
-    data: { id_token }
+    data: { id_token },
   })
-    .done(response => {
-      console.log(response.access_token);
-      localStorage.setItem('access_token', response.access_token)
+    .done((response) => {
+      localStorage.setItem('access_token', response.access_token);
       dashboardPage();
     })
     .fail((xhr, status, error) => {
-      console.log(xhr);
-      console.log(status);
       const template = alertTemplate('error', status);
       $(template).appendTo('#alert');
-    })
-
-  // var profile = googleUser.getBasicProfile();
-  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  // console.log('Name: ' + profile.getName());
-  // console.log('Image URL: ' + profile.getImageUrl());
-  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    });
 }
+
+const loginPage = () => {
+  if (localStorage.getItem('accessToken')) {
+    dashboardPage();
+  } else {
+    $('#login-page').show();
+    $('#register-page').hide();
+    $('#dashboard-page').hide();
+    $('#logout-btn').hide();
+    $('#navbar').hide();
+    $('#news-page').hide();
+    $('#hoaxes-page').hide();
+    $('#hospitals-page').hide();
+  }
+};
+
+const goToRegister = () => {
+  $('#register-page').show();
+  $('#login-page').hide();
+};
+
+const goToLogin = () => {
+  $('#register-page').hide();
+  $('#login-page').show();
+};
+
+const login = (e) => {
+  e.preventDefault();
+  const email = $('#emailLogin').val();
+  const password = $('#passwordLogin').val();
+
+  $.ajax({
+    method: 'POST',
+    url: `${url}/login`,
+    data: { email, password },
+  })
+    .done((response) => {
+      localStorage.access_token = response.access_token;
+      dashboardPage();
+    })
+    .fail((err) => {
+      const template = alertTemplate('error', err.responseJSON.message);
+      $(template).appendTo('#alert');
+    })
+    .always(() => {
+      $('#emailLogin').val('');
+      $('#passwordLogin').val('');
+    });
+};
+
+const register = (e) => {
+  e.preventDefault();
+  const email = $('#emailRegister').val();
+  const password = $('#passwordRegister').val();
+  const passwordConfirm = $('#passwordConfirmRegister').val();
+
+  if (password === passwordConfirm) {
+    $.ajax({
+      method: 'POST',
+      url: `${url}/register`,
+      data: { email, password },
+    })
+      .done((response) => {
+        $('#login-page').show();
+        $('#register-page').hide();
+      })
+      .fail((err) => {
+        const template = alertTemplate('error', err.responseJSON.message);
+        $(template).appendTo('#alert');
+      })
+      .always(() => {
+        $('#emailRegister').val('');
+        $('#passwordRegister').val('');
+        $('#passwordConfirmRegister').val('');
+      });
+  } else {
+    const template = alertTemplate('error', 'Your password not match');
+    $(template).appendTo('#alert');
+    $('#passwordRegister').val('');
+    $('#passwordConfirmRegister').val('');
+  }
+};
+
+const logout = () => {
+  localStorage.clear();
+  $('#login-page').show();
+  $('#register-page').hide();
+  $('#dashboard-page').hide();
+  $('#news-page').hide();
+  $('#hoaxes-page').hide();
+  $('#hospitals-page').hide();
+  $('#navbar').hide();
+  $('#emailLogin').val('');
+  $('#passwordLogin').val('');
+
+  const auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {});
+};
 
 const dashboardPage = () => {
   $(document).attr('title', 'Dashboard | Statistik');
@@ -139,6 +127,7 @@ const dashboardPage = () => {
   $('#dashboard-page').show();
   $('#news-page').hide();
   $('#hoaxes-page').hide();
+  $('#hospitals-page').hide();
   caseIndonesiaList();
   caseProvinceList();
   $('#logout-btn').show();
@@ -152,9 +141,10 @@ const newsPage = () => {
   $('#dashboard-page').hide();
   $('#news-page').show();
   $('#hoaxes-page').hide();
+  $('#hospitals-page').hide();
 
-  newsList()
-}
+  newsList();
+};
 
 const hoaxesPage = () => {
   $(document).attr('title', 'Dashboard | Hoax');
@@ -164,9 +154,23 @@ const hoaxesPage = () => {
   $('#dashboard-page').hide();
   $('#news-page').hide();
   $('#hoaxes-page').show();
+  $('#hospitals-page').hide();
 
-  hoaxesList()
-}
+  hoaxesList();
+};
+
+const hospitalsPage = () => {
+  $(document).attr('title', 'Dashboard | Hospitals');
+  $('#register-page').hide();
+  $('#login-page').hide();
+  $('#navbar').show();
+  $('#dashboard-page').hide();
+  $('#news-page').hide();
+  $('#hoaxes-page').hide();
+  $('#hospitals-page').show();
+
+  hospitalsList();
+};
 
 const newsList = () => {
   $.ajax({
@@ -177,7 +181,6 @@ const newsList = () => {
     },
   })
     .done((response) => {
-      console.log()
       $('#newsList').empty();
       response.articles.map((data) => {
         $(`
@@ -198,8 +201,8 @@ const newsList = () => {
         $(template).appendTo('#alert');
       });
     })
-    .always(() => { });
-}
+    .always(() => {});
+};
 
 const hoaxesList = () => {
   $.ajax({
@@ -216,9 +219,13 @@ const hoaxesList = () => {
         <div class="card w-75 mb-5">
           <div class="card-body">
             <h5 class="card-title">${data.title}</h5>
-            <p class="card-text"><a href="${data.url}" target="_blank">${data.url}</a></p>
-            <p>${moment(data.timestamp).format("DD MMMM YYYY")}</p>
-            <a href="${data.url}" target="_blank" class="btn btn-primary float-right">Baca selengkapnya</a>
+            <p class="card-text"><a href="${data.url}" target="_blank">${
+          data.url
+        }</a></p>
+            <p>${moment(data.timestamp).format('DD MMMM YYYY')}</p>
+            <a href="${
+              data.url
+            }" target="_blank" class="btn btn-primary float-right">Baca selengkapnya</a>
           </div>
         </div>
         `).appendTo('#hoaxesList');
@@ -230,10 +237,49 @@ const hoaxesList = () => {
         $(template).appendTo('#alert');
       });
     })
-    .always(() => { });
-}
+    .always(() => {});
+};
 
-const caseIndonesiaList = () =>{
+const hospitalsList = () => {
+  $.ajax({
+    url: url + '/hospitals',
+    method: 'GET',
+    headers: {
+      access_token: `${localStorage.getItem('access_token')}`,
+    },
+  })
+    .done((response) => {
+      $('#hospitalsList').empty();
+      response.map((data) => {
+        $(`
+        <div class="card w-75 mb-5">
+          <div class="card-body">
+          <i class="fas fa-hospital"></i><h5 class="card-title">${
+            data.name
+          }</h5>
+            ${
+              data.phone === null
+                ? ''
+                : "<p><i class='fa fa-phone'></i> " + data.phone + '</p>'
+            }
+            <p class="card-text"><i class="fa fa-map-marker"></i> ${
+              data.address
+            }</p>
+          </div>
+        </div>
+        `).appendTo('#hospitalsList');
+      });
+    })
+    .fail((err) => {
+      err.responseJSON.map((e) => {
+        const template = alertTemplate('error', e.message);
+        $(template).appendTo('#alert');
+      });
+    })
+    .always(() => {});
+};
+
+const caseIndonesiaList = () => {
   $.ajax({
     url: url + '/stats',
     method: 'GET',
@@ -291,7 +337,7 @@ const caseIndonesiaList = () =>{
       });
     })
     .always(() => {});
-}
+};
 
 const caseProvinceList = () => {
   $.ajax({
@@ -304,10 +350,9 @@ const caseProvinceList = () => {
     .done((response) => {
       $('#caseProvince').empty();
       response.map((data, index) => {
-        console.log(data)
         $(`
             <tr>
-              <th scope="row">${index+1}</th>
+              <th scope="row">${index + 1}</th>
               <td>${data.attributes.Provinsi}</td>
               <td>${data.attributes.Kasus_Posi.toLocaleString()}</td>
               <td>${data.attributes.Kasus_Semb.toLocaleString()}</td>
@@ -323,7 +368,7 @@ const caseProvinceList = () => {
       });
     })
     .always(() => {});
-}
+};
 
 const alertTemplate = (type, message) => {
   if (type === 'error') {

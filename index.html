@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-signin-client_id" content="492545537423-u7qvinekb1massbdduh5ka331t1q3aee.apps.googleusercontent.com">
+    <meta
+      name="google-signin-client_id"
+      content="492545537423-u7qvinekb1massbdduh5ka331t1q3aee.apps.googleusercontent.com"
+    />
     <title>Covindo</title>
     <link
       rel="stylesheet"
@@ -12,11 +15,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-     <!-- google Sign in -->
+    <!-- google Sign in -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
       integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -47,7 +56,7 @@
             <a class="nav-link" onclick="hoaxesPage()" href="#">Hoax</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Faskes</a>
+            <a class="nav-link" onclick="hospitalsPage()" href="#">Faskes</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -67,11 +76,12 @@
               class="dropdown-menu dropdown-menu-right"
               aria-labelledby="navbarDropdown"
             >
-              <a class="dropdown-item" href="#"
-                ><i class="fa fa-cog" aria-hidden="true"></i> Setting</a
-              >
-              <a class="dropdown-item" href="#"
-                id="logout-btn"><i class="fa fa-sign-out"></i> Logout</a
+              <a
+                class="dropdown-item"
+                href="#"
+                onclick="logout()"
+                id="logout-btn"
+                ><i class="fa fa-sign-out"></i> Logout</a
               >
             </div>
           </li>
@@ -85,42 +95,77 @@
 
     <!-- Start Register Form -->
     <section id="register-page">
-      <h1 class="h3 mb-3 mt-4">Daftar Akun Baru</h1> 
-      <form>
+      <h1 class="h3 mb-3 mt-4">Daftar Akun Baru</h1>
+      <form onsubmit="register(event)">
         <div class="mb-3">
           <label for="emailRegister" class="form-label">Masukkan Email</label>
-          <input type="email" class="form-control" id="emailRegister">
+          <input type="email" class="form-control" id="emailRegister" />
         </div>
         <div class="mb-3">
-          <label for="passwordRegister" class="form-label">Masukkan Kata Sandi</label>
-          <input type="password" class="form-control" id="passwordRegister">
+          <label for="passwordRegister" class="form-label"
+            >Masukkan Kata Sandi</label
+          >
+          <input type="password" class="form-control" id="passwordRegister" />
         </div>
         <div class="mb-3">
-          <label for="passwordConfirmRegister" class="form-label">Konfirmasi Kata Sandi</label>
-          <input type="password" class="form-control" id="passwordConfirmRegister" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">Kata sandi minimal 8 karakter.</div>
+          <label for="passwordConfirmRegister" class="form-label"
+            >Konfirmasi Kata Sandi</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="passwordConfirmRegister"
+            aria-describedby="emailHelp"
+          />
+          <div id="emailHelp" class="form-text">
+            Kata sandi minimal 8 karakter.
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary" id="buttonRegister">Daftar</button>
-        <button type="button" class="btn btn-secondary" id="buttonForLogin">Masuk di sini</button>
+        <button type="submit" class="btn btn-primary" id="buttonRegister">
+          Daftar
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="goToLogin()"
+          id="buttonForLogin"
+        >
+          Masuk di sini
+        </button>
       </form>
     </section>
     <!-- End Register Form -->
 
     <!-- Start Login Form -->
     <section id="login-page">
-      <h1 class="h3 mb-3 mt-4">Masuk ke akunmu</h1> 
-      <form>
+      <h1 class="h3 mb-3 mt-4">Masuk ke akunmu</h1>
+      <form onsubmit="login(event)">
         <div class="mb-3">
           <label for="emailLogin" class="form-label">Masukkan Email</label>
-          <input type="email" class="form-control" id="emailLogin">
+          <input type="email" class="form-control" id="emailLogin" />
         </div>
         <div class="mb-3">
-          <label for="passwordLogin" class="form-label">Masukkan Kata Sandi</label>
-          <input type="password" class="form-control" id="passwordLogin">
+          <label for="passwordLogin" class="form-label"
+            >Masukkan Kata Sandi</label
+          >
+          <input type="password" class="form-control" id="passwordLogin" />
         </div>
-        <button type="submit" class="btn btn-primary" id="buttonLogin">Masuk</button>
-        <button type="button" class="btn btn-secondary" id="buttonForRegister">Daftar di sini</button>
-        <div class="g-signin2" style="float: right;" data-onsuccess="onSignIn"></div>
+        <button type="submit" class="btn btn-primary" id="buttonLogin">
+          Masuk
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="goToRegister()"
+          id="buttonForRegister"
+        >
+          Daftar di sini
+        </button>
+        <div
+          class="g-signin2"
+          style="float: right"
+          data-onsuccess="onSignIn"
+        ></div>
       </form>
     </section>
     <!-- End Login Form -->
@@ -129,9 +174,7 @@
         <div class="row mt-5">
           <h1>Statistik Kasus Covid-19 di Indonesia</h1>
         </div>
-        <div class="row mt-5" id="caseIndonesia">
-          
-        </div>
+        <div class="row mt-5" id="caseIndonesia"></div>
         <div class="row mt-5">
           <div class="col">
             <table class="table table-striped">
@@ -144,8 +187,7 @@
                   <th scope="col">Meninggal</th>
                 </tr>
               </thead>
-              <tbody id="caseProvince">
-              </tbody>
+              <tbody id="caseProvince"></tbody>
             </table>
           </div>
         </div>
@@ -155,7 +197,7 @@
       <div class="container">
         <div class="row mt-5">
           <div class="col">
-          <h1>Berita Covid-19 Indonesia</h1>
+            <h1>Berita Covid-19 Indonesia</h1>
           </div>
         </div>
         <div class="row mt-5">
@@ -169,12 +211,26 @@
       <div class="container">
         <div class="row mt-5">
           <div class="col">
-          <h1>Hoax Covid-19 Indonesia</h1>
+            <h1>Hoax Covid-19 Indonesia</h1>
           </div>
         </div>
         <div class="row mt-5">
           <div class="col">
             <div id="hoaxesList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="hospitals-page">
+      <div class="container">
+        <div class="row mt-5">
+          <div class="col">
+            <h1>Daftar Rumah Sakit Indonesia</h1>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col">
+            <div id="hospitalsList"></div>
           </div>
         </div>
       </div>
